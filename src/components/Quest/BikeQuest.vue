@@ -41,6 +41,9 @@ const text = ref<string>();
             <!--TODO 1: create a text box -->
             <v-textarea auto-grow v-model="text" label="Response"></v-textarea>
             <!--TODO 2: display the response -->
+            <v-card>
+              {{ text }}
+            </v-card>
             <!--TODO 3: add response to list + show the list of all responses -->
             <!--TODO 4: implement function to determine if quest is complete -->
             <!--TODO 5: add the textbox to a seperate component -->

@@ -1,4 +1,4 @@
-import axios, { type AxiosResponse } from "axios";
+import axios from "axios";
 
 class GoogleApiService {
   private static GOOGLE_VISION_API_KEY =
@@ -6,7 +6,7 @@ class GoogleApiService {
 
   private static googleVisionUrl = `https://vision.googleapis.com/v1/images:annotate?key=${GoogleApiService.GOOGLE_VISION_API_KEY}`;
 
-  private static doGoogleVisionCall(
+  private static async doGoogleVisionCall(
     base64EncodedFile: string
   ): Promise<GoogleVisionResponse> {
     const dataOptions = {
@@ -32,11 +32,11 @@ class GoogleApiService {
            The api key is needed to authenticate the call at the google vision api end.
            The axios library is a possible library to use to perform a POST request
          */
-    return axios
-      .post<GoogleVisionResponse>(this.googleVisionUrl, dataOptions)
-      .then((response: AxiosResponse<GoogleVisionResponse>) => {
-        return response.data;
-      });
+    const response = await axios.post<GoogleVisionResponse>(
+      this.googleVisionUrl,
+      dataOptions
+    );
+    return response.data;
   }
 
   public detectLabels(file: File): Promise<GoogleVisionResponse> {

@@ -1,16 +1,11 @@
-<script lang="ts">
+<script setup lang="ts">
 import QuestList from "@/components/Quest/QuestList.vue";
-export default {
-  components: {
-    QuestList,
-  },
-};
 </script>
 
 <template>
   <v-container>
     <div class="home">
-      <questList />
+      <QuestList />
     </div>
   </v-container>
 </template>

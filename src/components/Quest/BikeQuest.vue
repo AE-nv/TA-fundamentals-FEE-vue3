@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import NavigationComponent from "@/components/shared/NavigationComponent.vue";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 
 const isQuestComplete = () => false;
 
-const text = ref<string>();
+const text = ref<string>("");
+const state = reactive<{ responses: string[] }>({ responses: [] });
+
+const addResponse = () => {
+  state.responses.push(text.value);
+  text.value = "";
+};
 </script>
 
 <template>
@@ -45,6 +51,11 @@ const text = ref<string>();
               {{ text }}
             </v-card>
             <!--TODO 3: add response to list + show the list of all responses -->
+            <v-btn @click="addResponse" :disabled="!text">Save</v-btn>
+            <p>Saved responses:</p>
+            <v-card v-for="(res, index) in state.responses" :key="index">
+              {{ res }}
+            </v-card>
             <!--TODO 4: implement function to determine if quest is complete -->
             <!--TODO 5: add the textbox to a seperate component -->
           </v-container>

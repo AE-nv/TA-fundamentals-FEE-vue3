@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import NavigationComponent from "@/components/shared/NavigationComponent.vue";
+import TextAreaBox from "@/components/shared/TextAreaBox.vue";
 import { reactive, ref } from "vue";
 
 // TODO 4: implement function to determine if quest is complete
@@ -20,9 +21,8 @@ const isQuestComplete = () => {
 const text = ref<string>("");
 const state = reactive<{ responses: string[] }>({ responses: [] });
 
-const addResponse = () => {
-  state.responses.push(text.value);
-  text.value = "";
+const addResponse = (input: string) => {
+  state.responses.push(input);
 };
 </script>
 
@@ -58,18 +58,19 @@ const addResponse = () => {
         <v-card>
           <v-container>
             <!--TODO 1: create a text box -->
-            <v-textarea auto-grow v-model="text" label="Response"></v-textarea>
-            <!--TODO 2: display the response -->
+            <!-- <v-textarea auto-grow v-model="text" label="Response"></v-textarea> -->
+            <!-- TODO 2: display the response
             <v-card>
               {{ text }}
-            </v-card>
-            <!--TODO 3: add response to list + show the list of all responses -->
-            <v-btn @click="addResponse" :disabled="!text">Save</v-btn>
+            </v-card>-->
+            <!-- TODO 3: add response to list + show the list of all responses -->
+            <!-- <v-btn @click="addResponse" :disabled="!text">Save</v-btn> -->
             <p>Saved responses:</p>
             <v-card v-for="(res, index) in state.responses" :key="index">
               {{ res }}
             </v-card>
             <!--TODO 5: add the textbox to a seperate component -->
+            <TextAreaBox btnText="Save" label="Response" @text="addResponse" />
           </v-container>
         </v-card>
       </div>

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import NavigationComponent from "@/components/shared/NavigationComponent.vue";
+import { ref } from "vue";
 
 const isQuestComplete = () => false;
+
+const text = ref<string>();
 </script>
 
 <template>
@@ -36,6 +39,7 @@ const isQuestComplete = () => false;
         <v-card>
           <v-container>
             <!--TODO 1: create a text box -->
+            <v-textarea auto-grow v-model="text" label="Response"></v-textarea>
             <!--TODO 2: display the response -->
             <!--TODO 3: add response to list + show the list of all responses -->
             <!--TODO 4: implement function to determine if quest is complete -->

@@ -2,7 +2,20 @@
 import NavigationComponent from "@/components/shared/NavigationComponent.vue";
 import { reactive, ref } from "vue";
 
-const isQuestComplete = () => false;
+// TODO 4: implement function to determine if quest is complete
+const isQuestComplete = () => {
+  if (
+    state.responses.includes("saddle") &&
+    state.responses.includes("pedals") &&
+    state.responses.includes("wheels")
+  ) {
+    console.log("completed");
+    return true;
+  } else {
+    console.log("Not completed");
+    return false;
+  }
+};
 
 const text = ref<string>("");
 const state = reactive<{ responses: string[] }>({ responses: [] });
@@ -56,7 +69,6 @@ const addResponse = () => {
             <v-card v-for="(res, index) in state.responses" :key="index">
               {{ res }}
             </v-card>
-            <!--TODO 4: implement function to determine if quest is complete -->
             <!--TODO 5: add the textbox to a seperate component -->
           </v-container>
         </v-card>

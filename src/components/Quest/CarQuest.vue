@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import NavigationComponent from "@/components/shared/NavigationComponent.vue";
+import CarListComponent from "../shared/CarListComponent.vue";
 import { carSearchService, type Car } from "@/services/CarSearch.service";
 import { reactive } from "vue";
 import TextAreaBox from "../shared/TextAreaBox.vue";
@@ -65,18 +66,11 @@ const unrecommend = (value: Car) => {
             <h3 class="quest-header">Recommended Cars</h3>
 
             <!-- TODO: Show list of recommended cars -->
-            <div v-for="(car, index) in state.recommendations" :key="index">
-              <v-card class="car-card">
-                <div class="car-card-text">
-                  {{ car.make_display }} - {{ car.model_trim }}
-                </div>
-                <div class="car-card-button">
-                  <v-btn text icon @click="unrecommend(car)">
-                    <v-icon>mdi-thumb-down</v-icon>
-                  </v-btn>
-                </div>
-              </v-card>
-            </div>
+            <CarListComponent
+              :cars="state.recommendations"
+              btnText="mdi-thumb-down"
+              @carClicked="unrecommend"
+            />
           </v-container>
         </v-card>
       </div>
@@ -91,24 +85,17 @@ const unrecommend = (value: Car) => {
             <!-- TODO 4: implement function to recommend car -->
             <!-- TODO 5: implement function to unrecommend car -->
             <!-- TODO 6: implement a message to show when the list of cars is empty -->
+            <!-- TODO 7: extract the list of found and recommended cars to a shared component -->
             <TextAreaBox
               @text="searchForCars"
               btnText="Search cars"
               label="Car keywords go here"
             />
-            <div v-for="(car, index) in state.foundCars" :key="index">
-              <v-card class="car-card">
-                <div class="car-card-text">
-                  {{ car.make_display }} - {{ car.model_trim }}
-                </div>
-                <div class="car-card-button">
-                  <v-btn flat icon @click="recommend(car)"
-                    ><v-icon>mdi-thumb-up</v-icon></v-btn
-                  >
-                </div>
-              </v-card>
-            </div>
-            <!-- TODO 7: extract the list of found and recommended cars to a shared component -->
+            <CarListComponent
+              :cars="state.foundCars"
+              btnText="mdi-thumb-up"
+              @carClicked="recommend"
+            />
           </v-container>
         </v-card>
       </div>

@@ -2,9 +2,7 @@ import axios from "axios";
 
 class GoogleApiService {
   private static GOOGLE_VISION_API_KEY =
-    "AIzaSyDlXHnneZE56Jm-PSqxlTO-zp7_1leXOyw";
-
-  private static googleVisionUrl = `https://vision.googleapis.com/v1/images:annotate?key=${GoogleApiService.GOOGLE_VISION_API_KEY}`;
+    "AIzaSyAJbO34MXeRZiWKYYM58bNlrWxRZoGaTZs";
 
   private static async doGoogleVisionCall(
     base64EncodedFile: string
@@ -33,7 +31,7 @@ class GoogleApiService {
            The axios library is a possible library to use to perform a POST request
          */
     const response = await axios.post<GoogleVisionResponse>(
-      this.googleVisionUrl,
+      `https://vision.googleapis.com/v1/images:annotate?key=${GoogleApiService.GOOGLE_VISION_API_KEY}`,
       dataOptions
     );
     return response.data;

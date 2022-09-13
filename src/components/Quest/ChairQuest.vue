@@ -1,7 +1,34 @@
 <script setup lang="ts">
 import NavigationComponent from "@/components/shared/NavigationComponent.vue";
+import { googleApiService } from "@/services/GoogleApi.service";
+import { reactive } from "vue";
+import DropZoneComponent from "../shared/DropZoneComponent.vue";
 
-const isQuestComplete = () => false;
+const state = reactive<{ uploadedFiles: File[]; correctFiles: File[] }>({
+  uploadedFiles: [],
+  correctFiles: [],
+});
+
+const filesAdded = (files: File[]) => {
+  files.forEach(async (file) => {
+    state.uploadedFiles.push(file);
+    const res = await googleApiService.detectLabels(file);
+    const annotationDescriptions = res.responses[0].labelAnnotations.map(
+      (_) => _.description
+    );
+    if (
+      annotationDescriptions.includes("Chair") &&
+      annotationDescriptions.includes("Red")
+    ) {
+      state.correctFiles.push(file);
+    }
+  });
+};
+
+const isFileCorrect = (file: File) =>
+  state.correctFiles.map((_) => _.name).includes(file.name);
+
+const isQuestComplete = () => !!state.correctFiles.length;
 </script>
 
 <template>
@@ -10,7 +37,7 @@ const isQuestComplete = () => false;
       <v-btn text @click="$router.go(-1)">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
-      <v-btn text @click="$router.go(-1)" :disabled="!isQuestComplete"
+      <v-btn text @click="$router.go(-1)" :disabled="!isQuestComplete()"
         >Complete Quest</v-btn
       >
     </navigation-component>
@@ -26,7 +53,6 @@ const isQuestComplete = () => false;
                 <ul>
                   <li>Chair</li>
                   <li>Color: red</li>
-                  <li>Made out of plastic</li>
                 </ul>
               </div>
               <div class="quest-image">
@@ -41,10 +67,25 @@ const isQuestComplete = () => false;
           <h3 class="quest-header">Add a picture of the chair you can offer</h3>
 
           <!--TODO 1: add the drop-zone element -->
+          <DropZoneComponent :enabled="true" @filesAdded="filesAdded" />
           <!--TODO 2: show list of files that are uploaded -->
           <!--TODO 3: call function whenever a file is added that sends file to google api service -->
           <!--TODO 4: determine if result of google api contains required characteristics to complete quest -->
           <!--TODO 5: provide user feedback in the list of characteristics -->
+          <v-card class="uploaded-files" v-if="state.uploadedFiles.length">
+            <p>Files uploaded:</p>
+            <ul>
+              <li
+                v-for="(uploadedFile, index) in state.uploadedFiles"
+                :key="index"
+                :class="
+                  isFileCorrect(uploadedFile) ? 'correct-file' : 'wrong-file'
+                "
+              >
+                {{ uploadedFile.name }}
+              </li>
+            </ul>
+          </v-card>
         </v-container>
       </v-card>
     </div>
@@ -52,6 +93,14 @@ const isQuestComplete = () => false;
 </template>
 
 <style lang="scss" scoped>
+.correct-file {
+  color: green;
+  font-weight: bold;
+}
+
+.wrong-file {
+  color: red;
+}
 .quest-info {
   display: flex;
   flex-direction: row;
@@ -143,6 +192,10 @@ $check-color: $brand-success;
     top: $check-height;
     position: absolute;
   }
+}
+
+.uploaded-files {
+  padding: 10px;
 }
 
 @keyframes loader-spin {

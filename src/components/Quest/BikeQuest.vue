@@ -30,7 +30,7 @@ const addResponse = () => {
             <h2 class="quest-header">Have a bike for me?</h2>
             <div class="quest-container">
               <div class="quest-image">
-                <v-img src="/bike.png"></v-img>
+                <img height="200" src="/bike.png">
               </div>
             </div>
             <div class="quest-container">

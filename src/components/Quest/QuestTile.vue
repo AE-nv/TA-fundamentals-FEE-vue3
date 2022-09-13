@@ -8,12 +8,12 @@ const props = defineProps<{
 
 <template>
   <v-list-item :key="quest.title" :to="`/quest/${props.quest.link}`">
-    <v-img
+    <img
       :src="`./${props.quest.image}`"
       class="my-3"
       contain
       height="200"
-    ></v-img>
+    >
     <v-list-item-title>{{ props.quest.title }}</v-list-item-title>
     <v-list-item-subtitle class="text--primary">{{
       props.quest.description

@@ -4,7 +4,11 @@ import { carSearchService, type Car } from "@/services/CarSearch.service";
 import { reactive } from "vue";
 import TextAreaBox from "../shared/TextAreaBox.vue";
 
-const isQuestComplete = () => false;
+const isQuestComplete = () => {
+  return !!state.recommendations.find((car: Car) =>
+    car.make_display.toLowerCase().includes("bmw")
+  );
+};
 
 const state = reactive<{ foundCars: Car[]; recommendations: Car[] }>({
   foundCars: [],
@@ -32,7 +36,7 @@ const unrecommend = (value: Car) => {
       <v-btn text @click="$router.go(-1)">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
-      <v-btn text @click="$router.go(-1)" :disabled="!isQuestComplete"
+      <v-btn text @click="$router.go(-1)" :disabled="!isQuestComplete()"
         >Complete Quest</v-btn
       >
     </navigation-component>

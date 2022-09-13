@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import NavigationComponent from "@/components/shared/NavigationComponent.vue";
+import { carSearchService, type Car } from "@/services/CarSearch.service";
+import { reactive } from "vue";
+import TextAreaBox from "../shared/TextAreaBox.vue";
 
 const isQuestComplete = () => false;
+
+const state = reactive<{ foundCars: Car[] }>({ foundCars: [] });
+
+const searchForCars = (value: string) => {
+  state.foundCars = carSearchService.search(value);
+};
 </script>
 
 <template>
@@ -51,8 +60,17 @@ const isQuestComplete = () => false;
         <v-card>
           <v-container>
             <h3 class="quest-header">Search for Cars</h3>
-
             <!-- TODO 1: include the text-area-box component -->
+            <TextAreaBox
+              @text="searchForCars"
+              btnText="Search cars"
+              label="Car keywords go here"
+            />
+            <div v-for="(car, index) in state.foundCars" :key="index">
+              <v-card class="car-card">
+                {{ car.make_display }} - {{ car.model_trim }}
+              </v-card>
+            </div>
             <!-- TODO 2: implement function that calls the CarSearchService -->
             <!-- TODO 3: show list of cars returned by the CarSearchService -->
             <!-- TODO 4: implement function to recommend car -->

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NavigationComponent from "@/components/shared/NavigationComponent.vue";
 import TextAreaBox from "@/components/shared/TextAreaBox.vue";
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 
 // TODO 4: implement function to determine if quest is complete
 const isQuestComplete = () => {
@@ -18,7 +18,6 @@ const isQuestComplete = () => {
   }
 };
 
-const text = ref<string>("");
 const state = reactive<{ responses: string[] }>({ responses: [] });
 
 const addResponse = (input: string) => {
